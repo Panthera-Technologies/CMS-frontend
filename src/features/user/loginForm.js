@@ -23,7 +23,7 @@ export default function LoginForm() {
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
-        dispatch(loginAsync(values.email, values.password));
+        
       }}
     >
       {({

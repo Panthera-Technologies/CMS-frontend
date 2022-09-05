@@ -1,35 +1,24 @@
-import { createAsyncThunk, } from '@reduxjs/toolkit'
-import axios from 'axios'
+import axios from "axios";
 
-export const registerUser = createAsyncThunk(
-    'user/register',
-    async({name, email, password, role}, {rejectWithValue}) => {
-        try{
-            await axios.post('http://localhost:8000/cms-api/register', {name, email, password, role})
-            .then((res) => {
-                if(res.status === 200){
-                    return res.data
-                }else{
-                    return rejectWithValue(res.data.message)
-                }
-            })
-            .catch(error => {
-                throw error
-            })
-        }catch(error){
-            return rejectWithValue(error)
-        } 
+const API_URL = "http://localhost:8000/cms-api/";
+
+const register = async (user) => {
+    const res = await axios.post(`${API_URL}register`, user);
+    if (res.status === 200) {
+      localStorage.setItem("user", JSON.stringify(res.data.data));
     }
-)
+};
 
-export const loginUser = createAsyncThunk(
+const login = async (data) => {
+  const res = await axios.post(`${API_URL}login`, data);
+  if(res.status === 200){
+    localStorage.setItem("user", JSON.stringify(res.data.data));
+  }
+};
 
-    'user/login',
-    async({email, password}, {rejectWithValue}) => {
-        try{
-            
-        }catch(error){
-            return rejectWithValue(error)
-        }
-    }
-)
+const userAction = {
+    register,
+    login
+}
+
+export default userAction;
